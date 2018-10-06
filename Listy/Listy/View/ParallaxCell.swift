@@ -15,7 +15,7 @@ class ParallaxCell: UITableViewCell {
     @IBOutlet weak var parallaxImageView: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+      setupParallax()
     }
     
     func configureCell(withImage image: UIImage, andDescription desc: String){
@@ -24,6 +24,25 @@ class ParallaxCell: UITableViewCell {
     }
     
     func setupParallax(){
+        //set up min and max
+        let min = CGFloat(-30)
+        let max = CGFloat(30)
         
+        //UIInterpolatingMotionEffect for X axis
+    let xMotion = UIInterpolatingMotionEffect(keyPath: "layer.transform.translation.x", type: .tiltAlongHorizontalAxis)
+        xMotion.minimumRelativeValue = min
+        xMotion.maximumRelativeValue = max
+        
+        //UIInterpolatingMotionEffect for Y axis
+        let yMotion = UIInterpolatingMotionEffect(keyPath: "layer.transform.translation.y", type: .tiltAlongVerticalAxis)
+        yMotion.minimumRelativeValue = min
+        yMotion.maximumRelativeValue = max
+        
+        //Instantiate Motion Effect and give it the X and Y axis
+        let motionEffectGroup = UIMotionEffectGroup()
+        motionEffectGroup.motionEffects = [xMotion, yMotion]
+        
+        //add motion effect to UIView
+        parallaxImageView.addMotionEffect(motionEffectGroup)
     }
 }
